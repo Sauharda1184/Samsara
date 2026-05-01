@@ -1,0 +1,686 @@
+{
+  "B & C Medical College Teaching Hospital|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "B.P. Koirala Institute of Health Sciences|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Golden Hospital Pvt.Ltd|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Nobel Medical College Teaching Hospital Pvt.Ltd|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Neuro Cardio Multispeciality Hospital|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Illam Hospital|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Koshi Hospital|Province 1|Nepal": {
+    "latitude": 26.4595032,
+    "longitude": 87.2853391,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Life Line Hospital|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Purna Tunga Birta city Hospital and Research Center|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Manamohan Memorial Eastern Regional Hospital|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Mechi Hospital|Province 1|Nepal": {
+    "latitude": 26.659366,
+    "longitude": 87.7037208,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Morang Cooperative Hospital|Province 1|Nepal": {
+    "latitude": 26.4527778,
+    "longitude": 87.278941,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Om Sai Pathibhara Hospital Pvt.Ltd|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Birat Medical College Teaching Hospital|Province 1|Nepal": {
+    "latitude": 27.195814,
+    "longitude": 87.3369312,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Purvanchal Cancer Hospital|Province 1|Nepal": {
+    "latitude": 26.64554,
+    "longitude": 87.9977961,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "National Medical College Teaching Hospital|Madhes|Nepal": {
+    "latitude": 26.9066675,
+    "longitude": 85.7069635,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Janakpur Zonal Hospital|Madhes|Nepal": {
+    "latitude": 26.7332979,
+    "longitude": 85.923427,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Gajendra narayan Singh Sagarmatha Zonal Hospital|Madhes|Nepal": {
+    "latitude": 26.9066675,
+    "longitude": 85.7069635,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Narayani Sub Regional Hospital|Madhes|Nepal": {
+    "latitude": 27.0038274,
+    "longitude": 84.8716327,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Janaki Health care and Research Center|Madhes|Nepal": {
+    "latitude": 26.9066675,
+    "longitude": 85.7069635,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Birgunj Health Care Hospital|Madhes|Nepal": {
+    "latitude": 27.0444374,
+    "longitude": 84.8989563,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "District Hospital Siraha|Madhes|Nepal": {
+    "latitude": 26.658324,
+    "longitude": 86.2103525,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Provincial Hospital Gaur|Madhes|Nepal": {
+    "latitude": 26.9066675,
+    "longitude": 85.7069635,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Aarogya Swasthya Prathisthan|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Alka Hospital Pvt.Ltd Lalitpur|Bagmati|Nepal": {
+    "latitude": 27.6698644,
+    "longitude": 85.3096819,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Ashwins Medical College & Hospital|Bagmati|Nepal": {
+    "latitude": 27.6623271,
+    "longitude": 85.3026856,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "B & B Hospital|Bagmati|Nepal": {
+    "latitude": 27.6651141,
+    "longitude": 85.3293429,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Bakulahar Ratnanagar Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "B.P. Koirala Memorial Cancer Hospital|Bagmati|Nepal": {
+    "latitude": 27.664926,
+    "longitude": 84.4176559,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Bhaktapur Cancer Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Bharatpur Hospital|Bagmati|Nepal": {
+    "latitude": 27.6823745,
+    "longitude": 84.4360338,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Birendra Army Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Blue Cross Hospital Pvt.Ltd|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Cancer Care Nepal|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Chirayu Dialysis Center|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Chitwan Medical College|Bagmati|Nepal": {
+    "latitude": 27.6453272,
+    "longitude": 84.383167,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Chure Hill Hospital Pvt.Ltd|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Civil Service Hospital|Bagmati|Nepal": {
+    "latitude": 27.6864368,
+    "longitude": 85.3389249,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "College of Medical Sciences|Bagmati|Nepal": {
+    "latitude": 27.7075095,
+    "longitude": 85.2833042,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Dhading Hospital|Bagmati|Nepal": {
+    "latitude": 27.9104607,
+    "longitude": 84.8949718,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Dhulikhel Hospital|Bagmati|Nepal": {
+    "latitude": 27.6167885,
+    "longitude": 85.5477638,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Grande International Hospital|Bagmati|Nepal": {
+    "latitude": 27.7529441,
+    "longitude": 85.3253103,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Greencity Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Hetauda Hospital|Bagmati|Nepal": {
+    "latitude": 27.4326542,
+    "longitude": 85.0279368,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Himal Hospital PVT.LTD|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Hospital for Advance Medicine & Surgery (HAMS)|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Kanti Children Hospital|Bagmati|Nepal": {
+    "latitude": 27.7347136,
+    "longitude": 85.3279493,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Kathmandu Cancer Center|Bagmati|Nepal": {
+    "latitude": 27.6695229,
+    "longitude": 85.4660082,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Kathmandu Medical college|Bagmati|Nepal": {
+    "latitude": 27.6872972,
+    "longitude": 85.4080554,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Kathmandu Model Hospital|Bagmati|Nepal": {
+    "latitude": 27.7026832,
+    "longitude": 85.3201142,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Kist Medical College and Teaching Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Manmohan Cardiothoracic Vascular and Transplant Center|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Manmohan Memorial Medical College & Teaching Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Maya Daya Swasthya Clinic|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "National Trauma Center|Bagmati|Nepal": {
+    "latitude": 27.7043028,
+    "longitude": 85.3130677,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "National Academy of Medical Sciences Bir Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "National Dialysis Center|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "National Kidney Center|Bagmati|Nepal": {
+    "latitude": 27.7246,
+    "longitude": 85.2957814,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "National Kidney Center Gaushala Unit|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "National Kidney Center Ramechhap|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Nepal Bharat Maitri Hospital|Bagmati|Nepal": {
+    "latitude": 27.7115048,
+    "longitude": 85.3455923,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Nepal Cancer Hospital and Research Center|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Nepal Medical College Pvt. Ltd.|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Nepal Orthopedic Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Nepal Police Hospital|Bagmati|Nepal": {
+    "latitude": 27.7310242,
+    "longitude": 85.3235715,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Om Hospital and Research Center PVT.LTD|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Paropakar Maternity and Women's Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Patan Academy of Health Science Patan Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Shahid Dharma Bhakta National Transplant Center|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Shahid Gangalal National Heart Center|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Spinal Injury Rehablitation Center|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Star Hospital|Bagmati|Nepal": {
+    "latitude": 27.6816645,
+    "longitude": 85.3028341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Sumeru Community Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Suvekchya International Hospital|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Trishuli Hospital|Bagmati|Nepal": {
+    "latitude": 27.9246457,
+    "longitude": 85.1408256,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "TU Teaching Hospital|Bagmati|Nepal": {
+    "latitude": 27.7361084,
+    "longitude": 85.3301725,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Upendra Devkota Memorial National Institute of Neuro|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Vayodha Hospitals PVT.LTD|Bagmati|Nepal": {
+    "latitude": 27.718333,
+    "longitude": 85.5378341,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Venus Hospital|Bagmati|Nepal": {
+    "latitude": 27.6972369,
+    "longitude": 85.3376008,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Pokhara Academy of Health Sciences WRH|Gandaki|Nepal": {
+    "latitude": 28.2017155,
+    "longitude": 84.2535946,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Manipal Teaching Hospital|Gandaki|Nepal": {
+    "latitude": 28.2367583,
+    "longitude": 83.9960459,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Charak Memorial Hospital|Gandaki|Nepal": {
+    "latitude": 28.2107833,
+    "longitude": 83.9861013,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Gandaki Medical College|Gandaki|Nepal": {
+    "latitude": 28.1708123,
+    "longitude": 84.0431371,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Lakecity Hospital and Critical Care Pvt.Ltd|Gandaki|Nepal": {
+    "latitude": 28.2017155,
+    "longitude": 84.2535946,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Lamjung Hospital|Gandaki|Nepal": {
+    "latitude": 28.2331462,
+    "longitude": 84.3771218,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Dhaulagiri Zonal Hospital|Gandaki|Nepal": {
+    "latitude": 28.2682373,
+    "longitude": 83.6009431,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Beni Hospital|Gandaki|Nepal": {
+    "latitude": 28.2017155,
+    "longitude": 84.2535946,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Syangja District Hospital|Gandaki|Nepal": {
+    "latitude": 28.1050636,
+    "longitude": 83.8736304,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Parbat District Hospital|Gandaki|Nepal": {
+    "latitude": 28.2116711,
+    "longitude": 83.6757747,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "National Kidney Center Tanahun|Gandaki|Nepal": {
+    "latitude": 28.2017155,
+    "longitude": 84.2535946,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Gorkha Hospital|Gandaki|Nepal": {
+    "latitude": 27.9949532,
+    "longitude": 84.6279988,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Damauli Hospital|Gandaki|Nepal": {
+    "latitude": 28.2017155,
+    "longitude": 84.2535946,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Madhyabindu District Hospital|Gandaki|Nepal": {
+    "latitude": 28.2017155,
+    "longitude": 84.2535946,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Waling Community Dialysis Center|Gandaki|Nepal": {
+    "latitude": 28.2017155,
+    "longitude": 84.2535946,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Lumbini Provincial Hospital|Lumbini|Nepal": {
+    "latitude": 27.6868329,
+    "longitude": 83.431806,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "District Hospital Bardia|Lumbini|Nepal": {
+    "latitude": 27.980713,
+    "longitude": 82.9531851,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Rapti Zonal Hospital|Lumbini|Nepal": {
+    "latitude": 28.1325191,
+    "longitude": 82.2870478,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Universal College of Medical Sciences|Lumbini|Nepal": {
+    "latitude": 27.4891213,
+    "longitude": 83.4486669,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Siddharthanagar City Hospital|Lumbini|Nepal": {
+    "latitude": 27.5181025,
+    "longitude": 83.4520689,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Gautam Buddha Community Heart Hospital|Lumbini|Nepal": {
+    "latitude": 27.6851669,
+    "longitude": 83.4768685,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Bheri Zonal Hospital|Lumbini|Nepal": {
+    "latitude": 28.0529036,
+    "longitude": 81.6200829,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Crimson Hospital|Lumbini|Nepal": {
+    "latitude": 27.6338853,
+    "longitude": 83.4702248,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Rapti Sub Regional Hospital|Lumbini|Nepal": {
+    "latitude": 28.0375479,
+    "longitude": 82.4920644,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Nepalgunj Medical College|Lumbini|Nepal": {
+    "latitude": 28.1984277,
+    "longitude": 81.6778671,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Sushil Koirala Prakhar Cancer Hospital|Lumbini|Nepal": {
+    "latitude": 27.980713,
+    "longitude": 82.9531851,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Siddhababa Hospital and Research Center|Lumbini|Nepal": {
+    "latitude": 27.980713,
+    "longitude": 82.9531851,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "R.C. Tharu Memorial City Hospital|Lumbini|Nepal": {
+    "latitude": 27.980713,
+    "longitude": 82.9531851,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Palpa Community Dialysis Center|Lumbini|Nepal": {
+    "latitude": 27.980713,
+    "longitude": 82.9531851,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Lamahi Community Dialysis Center|Lumbini|Nepal": {
+    "latitude": 27.980713,
+    "longitude": 82.9531851,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Karnali Academy of Health Science|Karnali|Nepal": {
+    "latitude": 29.324394,
+    "longitude": 82.171234,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Mid-Western Regional Hospital Surkhet|Karnali|Nepal": {
+    "latitude": 28.6062929,
+    "longitude": 81.6010416,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Seti Zonal Hospital|Sudurpaschim|Nepal": {
+    "latitude": 27.6730861,
+    "longitude": 85.3596793,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Mahakali Hospital|Sudurpaschim|Nepal": {
+    "latitude": 27.6730861,
+    "longitude": 85.3596793,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  },
+  "Ghodaghodi Hospital Pvt.Ltd|Sudurpaschim|Nepal": {
+    "latitude": 27.6730861,
+    "longitude": 85.3596793,
+    "verification_status": "unverified",
+    "coordinate_source": "OSM"
+  }
+}
