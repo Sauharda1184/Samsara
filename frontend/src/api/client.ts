@@ -48,6 +48,33 @@ export const api = {
   },
 };
 
+export interface RouteResult {
+  geometry: GeoJSON.LineString;
+  distance_km: number;
+  duration_min: number;
+}
+
+export async function getRoute(
+  fromLon: number, fromLat: number,
+  toLon: number, toLat: number
+): Promise<RouteResult | null> {
+  const url = `https://router.project-osrm.org/route/v1/driving/${fromLon},${fromLat};${toLon},${toLat}?overview=full&geometries=geojson`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data.code !== "Ok" || !data.routes?.length) return null;
+    const route = data.routes[0];
+    return {
+      geometry: route.geometry as GeoJSON.LineString,
+      distance_km: route.distance / 1000,
+      duration_min: route.duration / 60,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export async function geocodeLocation(
   query: string
 ): Promise<{ lat: number; lon: number; displayName: string } | null> {

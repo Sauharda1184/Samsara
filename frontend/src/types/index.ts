@@ -9,6 +9,13 @@ export interface Facility {
   coordinate_source: string;
   hospital_type: HospitalType;
   specialties: string;
+  total_beds: number;
+  available_beds: number;
+  total_doctors: number;
+  emergency_services: boolean;
+  phone: string | null;
+  established_year: number | null;
+  accreditation: string;
   created_at: string;
 }
 

@@ -63,6 +63,8 @@ def nearby_facilities(
             """
             SELECT id, name, province, country, verification_status, coordinate_source,
                    hospital_type, specialties, created_at,
+                   total_beds, available_beds, total_doctors,
+                   emergency_services, phone, established_year, accreditation,
                    ST_Y(location) AS latitude,
                    ST_X(location) AS longitude,
                    ST_Distance(
@@ -93,6 +95,13 @@ def nearby_facilities(
             coordinate_source=r.coordinate_source,
             hospital_type=r.hospital_type,
             specialties=r.specialties,
+            total_beds=r.total_beds,
+            available_beds=r.available_beds,
+            total_doctors=r.total_doctors,
+            emergency_services=r.emergency_services,
+            phone=r.phone,
+            established_year=r.established_year,
+            accreditation=r.accreditation,
             created_at=r.created_at,
             distance_km=round(float(r.distance_km), 2),
         )

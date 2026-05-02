@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
-import { Menu, Search, X, CheckCircle, MapPin, Navigation } from "lucide-react";
+import { Menu, Search, X, CheckCircle, MapPin, Navigation, Route } from "lucide-react";
 import type { Facility, Province, Specialty } from "../types";
 import {
   useAllFacilities, useFacilitiesByProvince, useFacilitiesBySpecialty,
@@ -7,6 +7,7 @@ import {
 } from "../hooks/useFacilities";
 import MapView from "../components/MapView";
 import Sidebar from "../components/Sidebar";
+import { getRoute, type RouteResult } from "../api/client";
 import { cn } from "../lib/utils";
 
 export default function Dashboard() {
@@ -17,6 +18,8 @@ export default function Dashboard() {
   const [radius, setRadius] = useState(50);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [mapSearch, setMapSearch] = useState("");
+  const [routeData, setRouteData] = useState<RouteResult | null>(null);
+  const [routeLoading, setRouteLoading] = useState(false);
 
   const { data: allFacilities = [], isLoading } = useAllFacilities();
   const { data: provinceFacilities = [] } = useFacilitiesByProvince(province);
@@ -39,12 +42,22 @@ export default function Dashboard() {
   );
 
   const handleFacilityClick = useCallback((f: Facility) => {
-    setSelectedFacility((prev) => (prev?.id === f.id ? null : f));
-  }, []);
+    setSelectedFacility((prev) => {
+      if (prev?.id === f.id) { setRouteData(null); return null; }
+      return f;
+    });
+    setRouteData(null);
+    if (userLocation) {
+      setRouteLoading(true);
+      getRoute(userLocation.lon, userLocation.lat, f.longitude, f.latitude)
+        .then((r) => setRouteData(r))
+        .finally(() => setRouteLoading(false));
+    }
+  }, [userLocation]);
 
   const handleLocationChange = useCallback((loc: { lat: number; lon: number } | null) => {
     setUserLocation(loc);
-    if (!loc) setSelectedFacility(null);
+    if (!loc) { setSelectedFacility(null); setRouteData(null); }
   }, []);
 
   const handleVerify = useCallback(() => {
@@ -130,6 +143,7 @@ export default function Dashboard() {
           userLocation={userLocation}
           radiusKm={radius}
           mapSearchQuery={mapSearch}
+          routeGeometry={routeData?.geometry ?? null}
           onFacilityClick={handleFacilityClick}
         />
 
@@ -175,6 +189,21 @@ export default function Dashboard() {
                   {selectedFacility.verification_status === "verified" ? "✓ Verified" : "Unverified"}
                 </span>
               </div>
+
+              {/* Route stats */}
+              {userLocation && (routeLoading || routeData) && (
+                <div className="mx-4 mb-3 rounded-lg bg-blue-50 border border-blue-100 px-3 py-2 flex items-center gap-2">
+                  <Route className="h-4 w-4 text-blue-600 shrink-0" />
+                  {routeLoading ? (
+                    <span className="text-xs text-blue-700">Calculating route…</span>
+                  ) : routeData ? (
+                    <span className="text-xs text-blue-800">
+                      <span className="font-semibold">{routeData.distance_km.toFixed(1)} km</span> by road ·{" "}
+                      <span className="font-semibold">{Math.round(routeData.duration_min)} min</span> drive
+                    </span>
+                  ) : null}
+                </div>
+              )}
 
               {/* Action buttons */}
               <div className="px-4 pb-4 grid grid-cols-3 gap-2">
