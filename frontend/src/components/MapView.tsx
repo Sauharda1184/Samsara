@@ -82,6 +82,7 @@ function buildGeoJSON(
         phone: f.phone ?? "",
         established_year: f.established_year ?? "",
         accreditation: f.accreditation,
+        services: f.services ?? "",
         isNearby: nearbyIds ? nearbyIds.has(f.id) : false,
         isSelected: f.id === selectedId,
         isSearchMatch: q ? f.name.toLowerCase().includes(q) : true,
@@ -131,6 +132,16 @@ function buildHoverHTML(p: Record<string, unknown>): string {
           <p style="font-size:10px;color:#9ca3af;margin:2px 0 0">on staff</p>
         </div>
       </div>
+
+      ${p.services ? `
+      <div style="margin-bottom:8px">
+        <p style="font-size:10px;color:#9ca3af;margin:0 0 4px;text-transform:uppercase;letter-spacing:0.05em">Services</p>
+        <div style="display:flex;flex-wrap:wrap;gap:3px">
+          ${(p.services as string).split(",").map((s) =>
+            `<span style="background:#f1f5f9;color:#475569;padding:2px 6px;border-radius:4px;font-size:10px">${s}</span>`
+          ).join("")}
+        </div>
+      </div>` : ""}
 
       <div style="font-size:11px;color:#6b7280;display:flex;flex-direction:column;gap:3px">
         ${p.phone ? `<span>📞 ${p.phone}</span>` : ""}

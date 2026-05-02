@@ -16,6 +16,7 @@ export interface Facility {
   phone: string | null;
   established_year: number | null;
   accreditation: string;
+  services: string;
   created_at: string;
 }
 
@@ -73,3 +74,21 @@ export const SPECIALTIES = [
 ] as const;
 
 export type Specialty = (typeof SPECIALTIES)[number];
+
+export const SERVICES = [
+  "All",
+  "ICU",
+  "Laboratory",
+  "X-ray",
+  "Blood Bank",
+  "Ambulance",
+  "Surgery",
+  "Pharmacy",
+  "Maternity Ward",
+  "Dialysis",
+  "CT Scan",
+  "MRI",
+  "Physiotherapy",
+] as const;
+
+export type Service = (typeof SERVICES)[number];

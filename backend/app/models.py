@@ -27,6 +27,7 @@ class Facility(Base):
     phone = Column(String(50), nullable=True)
     established_year = Column(Integer, nullable=True)
     accreditation = Column(String(100), nullable=False, default="None")
+    services = Column(Text, nullable=False, default="")
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(
         DateTime(timezone=True),

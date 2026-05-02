@@ -13,7 +13,7 @@ router = APIRouter(prefix="/facilities", tags=["facilities"])
 _SELECT = """
     SELECT id, name, province, country, verification_status, coordinate_source,
            hospital_type, specialties, total_beds, available_beds, total_doctors,
-           emergency_services, phone, established_year, accreditation, created_at,
+           emergency_services, phone, established_year, accreditation, services, created_at,
            ST_Y(location) AS latitude, ST_X(location) AS longitude
     FROM facilities
 """
@@ -38,6 +38,7 @@ def _row_to_response(row) -> FacilityResponse:
         phone=row.phone,
         established_year=row.established_year,
         accreditation=row.accreditation,
+        services=row.services,
         created_at=row.created_at,
     )
 
@@ -64,7 +65,7 @@ def nearby_facilities(
             SELECT id, name, province, country, verification_status, coordinate_source,
                    hospital_type, specialties, created_at,
                    total_beds, available_beds, total_doctors,
-                   emergency_services, phone, established_year, accreditation,
+                   emergency_services, phone, established_year, accreditation, services,
                    ST_Y(location) AS latitude,
                    ST_X(location) AS longitude,
                    ST_Distance(
@@ -102,6 +103,7 @@ def nearby_facilities(
             phone=r.phone,
             established_year=r.established_year,
             accreditation=r.accreditation,
+            services=r.services,
             created_at=r.created_at,
             distance_km=round(float(r.distance_km), 2),
         )

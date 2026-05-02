@@ -23,6 +23,7 @@ class FacilityResponse(BaseModel):
     phone: Optional[str]
     established_year: Optional[int]
     accreditation: str
+    services: str
     created_at: datetime
 
     model_config = {"from_attributes": True}

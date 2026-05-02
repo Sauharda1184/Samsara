@@ -115,6 +115,37 @@ def simulate_hospital_data(name: str, hospital_type: str) -> dict:
     }
 
 
+ALL_SERVICES = [
+    "ICU", "Laboratory", "X-ray", "Blood Bank",
+    "Ambulance", "Surgery", "Pharmacy", "Maternity Ward",
+    "Dialysis", "CT Scan", "MRI", "Physiotherapy",
+]
+
+# Which services each type is likely to have (probability 0-100)
+_SERVICE_PROB: dict[str, dict[str, int]] = {
+    "ICU":            {"Teaching": 95, "Government": 85, "Specialty": 70, "Community": 20, "Private": 60},
+    "Laboratory":     {"Teaching": 99, "Government": 95, "Specialty": 80, "Community": 70, "Private": 80},
+    "X-ray":          {"Teaching": 99, "Government": 95, "Specialty": 75, "Community": 60, "Private": 75},
+    "Blood Bank":     {"Teaching": 90, "Government": 80, "Specialty": 50, "Community": 20, "Private": 50},
+    "Ambulance":      {"Teaching": 95, "Government": 90, "Specialty": 60, "Community": 70, "Private": 65},
+    "Surgery":        {"Teaching": 99, "Government": 90, "Specialty": 80, "Community": 30, "Private": 70},
+    "Pharmacy":       {"Teaching": 99, "Government": 95, "Specialty": 85, "Community": 80, "Private": 90},
+    "Maternity Ward": {"Teaching": 85, "Government": 75, "Specialty": 30, "Community": 50, "Private": 55},
+    "Dialysis":       {"Teaching": 70, "Government": 50, "Specialty": 60, "Community": 10, "Private": 30},
+    "CT Scan":        {"Teaching": 85, "Government": 60, "Specialty": 50, "Community": 5,  "Private": 45},
+    "MRI":            {"Teaching": 75, "Government": 45, "Specialty": 40, "Community": 2,  "Private": 35},
+    "Physiotherapy":  {"Teaching": 80, "Government": 65, "Specialty": 55, "Community": 25, "Private": 50},
+}
+
+
+def simulate_services(name: str, hospital_type: str) -> str:
+    present = [
+        svc for svc in ALL_SERVICES
+        if _h(f"{name}:{svc}", 0, 99) < _SERVICE_PROB[svc].get(hospital_type, 40)
+    ]
+    return ",".join(present)
+
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def get_db_url() -> str:
@@ -164,6 +195,7 @@ def main():
         hospital_type = classify_type(name)
         specialties = get_specialties(name)
         sim = simulate_hospital_data(name, hospital_type)
+        services = simulate_services(name, hospital_type)
         facility_id = str(uuid.uuid4())
 
         cur.execute(
@@ -173,12 +205,14 @@ def main():
                  verification_status, coordinate_source,
                  hospital_type, specialties,
                  total_beds, available_beds, total_doctors,
-                 emergency_services, phone, established_year, accreditation)
+                 emergency_services, phone, established_year, accreditation,
+                 services)
             VALUES (
                 %s, %s, %s, %s,
                 ST_SetSRID(ST_MakePoint(%s, %s), 4326),
                 %s, %s, %s, %s,
-                %s, %s, %s, %s, %s, %s, %s
+                %s, %s, %s, %s, %s, %s, %s,
+                %s
             )
             ON CONFLICT DO NOTHING
             """,
@@ -189,6 +223,7 @@ def main():
                 sim["total_beds"], sim["available_beds"], sim["total_doctors"],
                 sim["emergency_services"], sim["phone"],
                 sim["established_year"], sim["accreditation"],
+                services,
             ),
         )
         inserted += 1
