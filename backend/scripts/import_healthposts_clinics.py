@@ -34,7 +34,7 @@ OVERPASS_QUERIES = {
           node["amenity"="health_post"]({NEPAL_BBOX});
           way["healthcare"="health_post"]({NEPAL_BBOX});
         );
-        out center;
+        out center 20;
     """,
     "Clinic": f"""
         [out:json][timeout:60];
@@ -43,7 +43,7 @@ OVERPASS_QUERIES = {
           node["amenity"="clinic"]({NEPAL_BBOX});
           way["healthcare"="clinic"]({NEPAL_BBOX});
         );
-        out center;
+        out center 20;
     """,
 }
 
