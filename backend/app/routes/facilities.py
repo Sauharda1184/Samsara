@@ -68,6 +68,7 @@ def nearby_facilities(
                    hospital_type, specialties, created_at,
                    total_beds, available_beds, total_doctors,
                    emergency_services, phone, established_year, accreditation, services,
+                   facility_category,
                    ST_Y(location) AS latitude,
                    ST_X(location) AS longitude,
                    ST_Distance(
