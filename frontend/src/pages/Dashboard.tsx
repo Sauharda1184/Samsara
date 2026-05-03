@@ -1,8 +1,8 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useRef } from "react";
 import { Menu, Search, X, CheckCircle, MapPin, Navigation, Route } from "lucide-react";
-import type { Facility, Province, Specialty, Service } from "../types";
+import type { Facility, Province, Specialty, Service, FacilityCategory } from "../types";
 import { useAllFacilities, useNearbyFacilities, useUpdateFacility } from "../hooks/useFacilities";
-import MapView from "../components/MapView";
+import MapView, { type MapBounds } from "../components/MapView";
 import Sidebar from "../components/Sidebar";
 import { getRoute, type RouteResult } from "../api/client";
 import { cn } from "../lib/utils";
@@ -12,6 +12,7 @@ export default function Dashboard() {
   const [province, setProvince] = useState<Province>("All");
   const [specialty, setSpecialty] = useState<Specialty>("All");
   const [service, setService] = useState<Service>("All");
+  const [facilityCategory, setFacilityCategory] = useState<FacilityCategory>("All");
   const [hasAvailableBeds, setHasAvailableBeds] = useState(false);
 
   // ── UI state ────────────────────────────────────────────────────────────────
@@ -23,6 +24,11 @@ export default function Dashboard() {
   const [routeData, setRouteData] = useState<RouteResult | null>(null);
   const [routeLoading, setRouteLoading] = useState(false);
 
+  // ── Area search state ────────────────────────────────────────────────────────
+  const [activeBounds, setActiveBounds] = useState<MapBounds | null>(null);
+  const [hasPendingAreaSearch, setHasPendingAreaSearch] = useState(false);
+  const pendingBoundsRef = useRef<MapBounds | null>(null);
+
   // ── Data fetching ───────────────────────────────────────────────────────────
   const { data: allFacilities = [], isLoading } = useAllFacilities();
   const { data: nearbyFacilities = [] } = useNearbyFacilities(
@@ -31,16 +37,20 @@ export default function Dashboard() {
   const updateFacility = useUpdateFacility();
 
   // ── Composable client-side filtering ───────────────────────────────────────
-  // Each predicate is independent — add new filters here without touching anything else
   const mapFacilities: Facility[] = useMemo(() => {
     return allFacilities.filter((f) => {
+      if (facilityCategory !== "All" && f.facility_category !== facilityCategory) return false;
       if (province !== "All" && f.province !== province) return false;
       if (specialty !== "All" && !f.specialties.includes(specialty)) return false;
       if (service !== "All" && !f.services.includes(service)) return false;
       if (hasAvailableBeds && f.available_beds <= 0) return false;
+      if (activeBounds) {
+        if (f.longitude < activeBounds.west || f.longitude > activeBounds.east) return false;
+        if (f.latitude < activeBounds.south || f.latitude > activeBounds.north) return false;
+      }
       return true;
     });
-  }, [allFacilities, province, specialty, service, hasAvailableBeds]);
+  }, [allFacilities, facilityCategory, province, specialty, service, hasAvailableBeds, activeBounds]);
 
   const nearbyIds = useMemo<Set<string>>(
     () => new Set(nearbyFacilities.map((f) => f.id)),
@@ -65,6 +75,11 @@ export default function Dashboard() {
   const handleLocationChange = useCallback((loc: { lat: number; lon: number } | null) => {
     setUserLocation(loc);
     if (!loc) { setSelectedFacility(null); setRouteData(null); }
+  }, []);
+
+  const handleMoveEnd = useCallback((bounds: MapBounds) => {
+    pendingBoundsRef.current = bounds;
+    setHasPendingAreaSearch(true);
   }, []);
 
   const handleVerify = useCallback(() => {
@@ -95,10 +110,12 @@ export default function Dashboard() {
         province={province}
         specialty={specialty}
         service={service}
+        facilityCategory={facilityCategory}
         hasAvailableBeds={hasAvailableBeds}
         onProvinceChange={(p) => { setProvince(p); setSelectedFacility(null); }}
         onSpecialtyChange={(s) => { setSpecialty(s); setSelectedFacility(null); }}
         onServiceChange={(s) => { setService(s); setSelectedFacility(null); }}
+        onFacilityCategoryChange={(c) => { setFacilityCategory(c); setSelectedFacility(null); }}
         onHasAvailableBedsChange={setHasAvailableBeds}
         onLocationChange={handleLocationChange}
         onRadiusChange={setRadius}
@@ -115,6 +132,29 @@ export default function Dashboard() {
         >
           <Menu className="h-5 w-5 text-foreground" />
         </button>
+
+        {/* Area search controls */}
+        {(hasPendingAreaSearch || activeBounds) && (
+          <div className="absolute top-16 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+            {hasPendingAreaSearch && (
+              <button
+                onClick={() => { setActiveBounds(pendingBoundsRef.current); setHasPendingAreaSearch(false); }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-md text-xs font-medium text-foreground hover:bg-accent transition-colors"
+              >
+                <Search className="h-3.5 w-3.5" />
+                {activeBounds ? "Re-search this area" : "Search this area"}
+              </button>
+            )}
+            {activeBounds && (
+              <button
+                onClick={() => { setActiveBounds(null); setHasPendingAreaSearch(false); }}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 shadow-md text-xs font-medium text-blue-700 hover:bg-blue-100 transition-colors"
+              >
+                <X className="h-3 w-3" /> Clear area filter
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Floating map search */}
         <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 w-full max-w-sm px-4 md:px-0">
@@ -153,6 +193,7 @@ export default function Dashboard() {
           mapSearchQuery={mapSearch}
           routeGeometry={routeData?.geometry ?? null}
           onFacilityClick={handleFacilityClick}
+          onMoveEnd={handleMoveEnd}
         />
 
         {/* Selected facility detail card */}

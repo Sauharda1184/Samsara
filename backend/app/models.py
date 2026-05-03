@@ -28,6 +28,7 @@ class Facility(Base):
     established_year = Column(Integer, nullable=True)
     accreditation = Column(String(100), nullable=False, default="None")
     services = Column(Text, nullable=False, default="")
+    facility_category = Column(String(50), nullable=False, default="Hospital")
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(
         DateTime(timezone=True),

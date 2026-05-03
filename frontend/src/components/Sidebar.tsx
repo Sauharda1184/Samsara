@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { Loader2, LocateFixed, Search, X, SlidersHorizontal, BedDouble } from "lucide-react";
-import { PROVINCES, SPECIALTIES, SERVICES, type Province, type Specialty, type Service } from "../types";
+import { PROVINCES, SPECIALTIES, SERVICES, FACILITY_CATEGORIES, type Province, type Specialty, type Service, type FacilityCategory } from "../types";
 import { geocodeLocation } from "../api/client";
 import { cn } from "../lib/utils";
 
@@ -11,10 +11,12 @@ interface SidebarProps {
   province: Province;
   specialty: Specialty;
   service: Service;
+  facilityCategory: FacilityCategory;
   hasAvailableBeds: boolean;
   onProvinceChange: (p: Province) => void;
   onSpecialtyChange: (s: Specialty) => void;
   onServiceChange: (s: Service) => void;
+  onFacilityCategoryChange: (c: FacilityCategory) => void;
   onHasAvailableBedsChange: (v: boolean) => void;
   onLocationChange: (loc: { lat: number; lon: number } | null) => void;
   onRadiusChange: (km: number) => void;
@@ -26,8 +28,8 @@ interface SidebarProps {
 
 export default function Sidebar({
   totalCount, filteredCount, nearbyCount,
-  province, specialty, service, hasAvailableBeds,
-  onProvinceChange, onSpecialtyChange, onServiceChange, onHasAvailableBedsChange,
+  province, specialty, service, facilityCategory, hasAvailableBeds,
+  onProvinceChange, onSpecialtyChange, onServiceChange, onFacilityCategoryChange, onHasAvailableBedsChange,
   onLocationChange, onRadiusChange,
   radius, hasLocation, isOpen, onClose,
 }: SidebarProps) {
@@ -63,7 +65,8 @@ export default function Sidebar({
   }, [onLocationChange]);
 
   const activeFilterCount = [
-    province !== "All", specialty !== "All", service !== "All", hasAvailableBeds
+    province !== "All", specialty !== "All", service !== "All",
+    facilityCategory !== "All", hasAvailableBeds,
   ].filter(Boolean).length;
 
   return (
@@ -187,6 +190,14 @@ export default function Sidebar({
             </button>
 
             <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Facility Type</label>
+              <select value={facilityCategory} onChange={(e) => onFacilityCategoryChange(e.target.value as FacilityCategory)}
+                className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer">
+                {FACILITY_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+
+            <div>
               <label className="text-xs text-muted-foreground mb-1 block">Province</label>
               <select value={province} onChange={(e) => onProvinceChange(e.target.value as Province)}
                 className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer">
@@ -212,7 +223,7 @@ export default function Sidebar({
 
             {activeFilterCount > 0 && (
               <button
-                onClick={() => { onProvinceChange("All"); onSpecialtyChange("All"); onServiceChange("All"); onHasAvailableBedsChange(false); }}
+                onClick={() => { onProvinceChange("All"); onSpecialtyChange("All"); onServiceChange("All"); onFacilityCategoryChange("All"); onHasAvailableBedsChange(false); }}
                 className="w-full text-xs text-muted-foreground hover:text-foreground underline text-center"
               >
                 Clear all filters
@@ -231,6 +242,8 @@ export default function Sidebar({
                 { color: "#0891b2", label: "Community" },
                 { color: "#d97706", label: "Specialty" },
                 { color: "#15803d", label: "Nearby" },
+                { color: "#059669", label: "Healthpost" },
+                { color: "#0284c7", label: "Clinic" },
               ].map(({ color, label }) => (
                 <div key={label} className="flex items-center gap-1.5">
                   <span className="h-3 w-3 rounded-full shrink-0" style={{ background: color }} />

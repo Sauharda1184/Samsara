@@ -13,7 +13,8 @@ router = APIRouter(prefix="/facilities", tags=["facilities"])
 _SELECT = """
     SELECT id, name, province, country, verification_status, coordinate_source,
            hospital_type, specialties, total_beds, available_beds, total_doctors,
-           emergency_services, phone, established_year, accreditation, services, created_at,
+           emergency_services, phone, established_year, accreditation, services,
+           facility_category, created_at,
            ST_Y(location) AS latitude, ST_X(location) AS longitude
     FROM facilities
 """
@@ -39,6 +40,7 @@ def _row_to_response(row) -> FacilityResponse:
         established_year=row.established_year,
         accreditation=row.accreditation,
         services=row.services,
+        facility_category=row.facility_category,
         created_at=row.created_at,
     )
 
@@ -104,6 +106,7 @@ def nearby_facilities(
             established_year=r.established_year,
             accreditation=r.accreditation,
             services=r.services,
+            facility_category=r.facility_category,
             created_at=r.created_at,
             distance_km=round(float(r.distance_km), 2),
         )
@@ -133,6 +136,25 @@ def facilities_by_specialty(name: str = Query(..., min_length=1), db: Session = 
 def list_facilities(db: Session = Depends(get_db)):
     rows = db.execute(
         text(f"{_SELECT} ORDER BY province, name")
+    ).fetchall()
+    return [_row_to_response(r) for r in rows]
+
+
+@router.get("/bounds", response_model=List[FacilityResponse])
+def facilities_by_bounds(
+    lat_min: float = Query(..., ge=-90, le=90),
+    lat_max: float = Query(..., ge=-90, le=90),
+    lon_min: float = Query(..., ge=-180, le=180),
+    lon_max: float = Query(..., ge=-180, le=180),
+    db: Session = Depends(get_db),
+):
+    rows = db.execute(
+        text(
+            f"{_SELECT} WHERE ST_Within("
+            "location, ST_MakeEnvelope(:lon_min, :lat_min, :lon_max, :lat_max, 4326)"
+            ") ORDER BY province, name"
+        ),
+        {"lat_min": lat_min, "lat_max": lat_max, "lon_min": lon_min, "lon_max": lon_max},
     ).fetchall()
     return [_row_to_response(r) for r in rows]
 

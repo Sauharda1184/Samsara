@@ -24,6 +24,7 @@ class FacilityResponse(BaseModel):
     established_year: Optional[int]
     accreditation: str
     services: str
+    facility_category: str
     created_at: datetime
 
     model_config = {"from_attributes": True}

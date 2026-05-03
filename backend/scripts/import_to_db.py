@@ -203,14 +203,14 @@ def main():
             INSERT INTO facilities
                 (id, name, province, country, location,
                  verification_status, coordinate_source,
-                 hospital_type, specialties,
+                 hospital_type, specialties, facility_category,
                  total_beds, available_beds, total_doctors,
                  emergency_services, phone, established_year, accreditation,
                  services)
             VALUES (
                 %s, %s, %s, %s,
                 ST_SetSRID(ST_MakePoint(%s, %s), 4326),
-                %s, %s, %s, %s,
+                %s, %s, %s, %s, 'Hospital',
                 %s, %s, %s, %s, %s, %s, %s,
                 %s
             )

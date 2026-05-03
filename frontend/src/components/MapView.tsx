@@ -2,6 +2,10 @@ import { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import type { Facility } from "../types";
 
+export interface MapBounds {
+  west: number; east: number; north: number; south: number;
+}
+
 interface MapViewProps {
   facilities: Facility[];
   nearbyIds?: Set<string>;
@@ -11,6 +15,7 @@ interface MapViewProps {
   mapSearchQuery?: string;
   routeGeometry?: GeoJSON.LineString | null;
   onFacilityClick?: (facility: Facility) => void;
+  onMoveEnd?: (bounds: MapBounds) => void;
 }
 
 const OSM_STYLE: maplibregl.StyleSpecification = {
@@ -83,6 +88,7 @@ function buildGeoJSON(
         established_year: f.established_year ?? "",
         accreditation: f.accreditation,
         services: f.services ?? "",
+        facility_category: f.facility_category ?? "Hospital",
         isNearby: nearbyIds ? nearbyIds.has(f.id) : false,
         isSelected: f.id === selectedId,
         isSearchMatch: q ? f.name.toLowerCase().includes(q) : true,
@@ -160,6 +166,7 @@ export default function MapView({
   mapSearchQuery,
   routeGeometry,
   onFacilityClick,
+  onMoveEnd,
 }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -170,6 +177,8 @@ export default function MapView({
   facilitiesRef.current = facilities;
   const onFacilityClickRef = useRef(onFacilityClick);
   onFacilityClickRef.current = onFacilityClick;
+  const onMoveEndRef = useRef(onMoveEnd);
+  onMoveEndRef.current = onMoveEnd;
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -205,7 +214,9 @@ export default function MapView({
             "case",
             ["==", ["get", "isSelected"], true], 11,
             ["==", ["get", "isNearby"], true], 9,
-            ["==", ["get", "isSearchMatch"], false], 5,
+            ["==", ["get", "isSearchMatch"], false], 4,
+            ["==", ["get", "facility_category"], "Healthpost"], 5,
+            ["==", ["get", "facility_category"], "Clinic"], 6,
             7,
           ],
           "circle-color": [
@@ -213,6 +224,8 @@ export default function MapView({
             ["==", ["get", "isSelected"], true], "#1e3a8a",
             ["==", ["get", "isNearby"], true], "#15803d",
             ["==", ["get", "isSearchMatch"], false], "#9ca3af",
+            ["==", ["get", "facility_category"], "Healthpost"], "#059669",
+            ["==", ["get", "facility_category"], "Clinic"], "#0284c7",
             ["==", ["get", "hospital_type"], "Teaching"], "#7c3aed",
             ["==", ["get", "hospital_type"], "Government"], "#2563eb",
             ["==", ["get", "hospital_type"], "Community"], "#0891b2",
@@ -277,6 +290,14 @@ export default function MapView({
 
         const fac = facilitiesRef.current.find((f) => f.id === props.id);
         if (fac && onFacilityClickRef.current) onFacilityClickRef.current(fac);
+      });
+
+      map.on("moveend", () => {
+        const b = map.getBounds();
+        onMoveEndRef.current?.({
+          west: b.getWest(), east: b.getEast(),
+          north: b.getNorth(), south: b.getSouth(),
+        });
       });
     });
 

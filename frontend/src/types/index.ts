@@ -17,6 +17,7 @@ export interface Facility {
   established_year: number | null;
   accreditation: string;
   services: string;
+  facility_category: string;
   created_at: string;
 }
 
@@ -92,3 +93,6 @@ export const SERVICES = [
 ] as const;
 
 export type Service = (typeof SERVICES)[number];
+
+export const FACILITY_CATEGORIES = ["All", "Hospital", "Healthpost", "Clinic"] as const;
+export type FacilityCategory = (typeof FACILITY_CATEGORIES)[number];
