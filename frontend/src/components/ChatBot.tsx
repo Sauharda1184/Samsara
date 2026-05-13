@@ -11,10 +11,11 @@ interface Message {
 
 interface ChatBotProps {
   userLocation?: { lat: number; lon: number } | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export default function ChatBot({ userLocation }: ChatBotProps) {
-  const [open, setOpen] = useState(false);
+export default function ChatBot({ userLocation, open, onOpenChange }: ChatBotProps) {
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "Hello! I'm your Samsara health assistant. I can help you find the right care in Nepal and answer health questions. How can I help?" }
   ]);
@@ -87,11 +88,11 @@ export default function ChatBot({ userLocation }: ChatBotProps) {
 
   return (
     <>
-      {/* Toggle button */}
+      {/* Desktop-only floating toggle button */}
       <button
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => onOpenChange(!open)}
         className={cn(
-          "absolute bottom-6 right-6 z-20 h-13 w-13 rounded-full shadow-lg flex items-center justify-center transition-all",
+          "hidden md:flex absolute bottom-6 right-6 z-20 rounded-full shadow-lg items-center justify-center transition-all",
           open ? "bg-muted text-foreground" : "bg-primary text-primary-foreground"
         )}
         style={{ width: 52, height: 52 }}
@@ -101,18 +102,29 @@ export default function ChatBot({ userLocation }: ChatBotProps) {
 
       {/* Chat panel */}
       {open && (
-        <div className="absolute bottom-20 right-6 z-20 w-80 bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
-          style={{ height: 420 }}>
-
+        <div className={cn(
+          "absolute z-20 bg-card border border-border flex flex-col overflow-hidden",
+          // Mobile: full screen above bottom nav
+          "inset-x-0 top-0 bottom-16 rounded-none",
+          // Desktop: compact panel bottom-right
+          "md:inset-x-auto md:top-auto md:bottom-20 md:right-6 md:w-80 md:rounded-2xl md:shadow-2xl md:h-[420px]",
+        )}>
           {/* Header */}
           <div className="px-4 py-3 bg-primary text-primary-foreground flex items-center gap-2 shrink-0">
-            <MessageCircle className="h-4 w-4" />
-            <div>
+            <MessageCircle className="h-4 w-4 shrink-0" />
+            <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold">Samsara Health Assistant</p>
               <p className="text-[10px] opacity-75">
                 {userLocation ? "Using your location" : "Set location for nearby recommendations"}
               </p>
             </div>
+            {/* Mobile close button */}
+            <button
+              onClick={() => onOpenChange(false)}
+              className="md:hidden text-primary-foreground/80 hover:text-primary-foreground shrink-0"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
 
           {/* Messages */}

@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useRef } from "react";
-import { Menu, Search, X, CheckCircle, MapPin, Navigation, Route, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, X, CheckCircle, MapPin, Navigation, Route, ChevronDown, ChevronUp, SlidersHorizontal, MessageCircle } from "lucide-react";
 import type { Facility, Province, Specialty, Service, FacilityCategory } from "../types";
 import { useAllFacilities, useNearbyFacilities, useUpdateFacility } from "../hooks/useFacilities";
 import ChatBot from "../components/ChatBot";
@@ -9,7 +9,7 @@ import { getRoute, type RouteResult } from "../api/client";
 import { cn } from "../lib/utils";
 
 export default function Dashboard() {
-  // ── Filter state (single source of truth) ──────────────────────────────────
+  // ── Filter state ────────────────────────────────────────────────────────────
   const [province, setProvince] = useState<Province>("All");
   const [specialty, setSpecialty] = useState<Specialty>("All");
   const [service, setService] = useState<Service>("All");
@@ -22,6 +22,7 @@ export default function Dashboard() {
   const [userLocation, setUserLocation] = useState<{ lat: number; lon: number } | null>(null);
   const [radius, setRadius] = useState(50);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
   const [mapSearch, setMapSearch] = useState("");
   const [routeData, setRouteData] = useState<RouteResult | null>(null);
   const [routeLoading, setRouteLoading] = useState(false);
@@ -39,7 +40,7 @@ export default function Dashboard() {
   );
   const updateFacility = useUpdateFacility();
 
-  // ── Composable client-side filtering ───────────────────────────────────────
+  // ── Filtering ───────────────────────────────────────────────────────────────
   const mapFacilities: Facility[] = useMemo(() => {
     return allFacilities.filter((f) => {
       if (facilityCategory !== "All" && f.facility_category !== facilityCategory) return false;
@@ -60,6 +61,11 @@ export default function Dashboard() {
     () => new Set(nearbyFacilities.map((f) => f.id)),
     [nearbyFacilities]
   );
+
+  const activeFilterCount = [
+    province !== "All", specialty !== "All", service !== "All",
+    facilityCategory !== "All", hasAvailableBeds, hasEmergency,
+  ].filter(Boolean).length;
 
   // ── Handlers ────────────────────────────────────────────────────────────────
   const handleFacilityClick = useCallback((f: Facility) => {
@@ -133,13 +139,6 @@ export default function Dashboard() {
       />
 
       <main className="flex-1 relative overflow-hidden">
-        <button
-          onClick={() => setSidebarOpen(true)}
-          className="md:hidden absolute top-3 left-3 z-10 bg-card border border-border rounded-lg p-2 shadow-md"
-        >
-          <Menu className="h-5 w-5 text-foreground" />
-        </button>
-
         {/* Area search controls */}
         {(hasPendingAreaSearch || activeBounds) && (
           <div className="absolute top-16 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
@@ -203,9 +202,9 @@ export default function Dashboard() {
           onMoveEnd={handleMoveEnd}
         />
 
-        {/* Selected facility detail card */}
+        {/* Selected facility detail card — sits above mobile bottom nav */}
         {selectedFacility && (
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-full max-w-md px-4 z-10">
+          <div className="absolute bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 w-full max-w-md px-4 z-10">
             <div className="bg-card/97 backdrop-blur-md rounded-2xl border border-border shadow-xl overflow-hidden">
               {/* Header */}
               <div className="px-4 pt-4 pb-3 flex items-start gap-3">
@@ -290,8 +289,6 @@ export default function Dashboard() {
                       </>
                     ) : null}
                   </div>
-
-                  {/* Turn-by-turn steps */}
                   {showSteps && routeData && routeData.steps.length > 0 && (
                     <div className="border-t border-blue-100 max-h-36 overflow-y-auto divide-y divide-blue-50">
                       {routeData.steps.map((step, i) => (
@@ -300,9 +297,7 @@ export default function Dashboard() {
                           <span className="text-xs text-blue-900 flex-1 leading-5">{step.instruction}</span>
                           {step.distance_m > 0 && (
                             <span className="text-xs text-blue-500 shrink-0 leading-5">
-                              {step.distance_m >= 1000
-                                ? `${(step.distance_m / 1000).toFixed(1)} km`
-                                : `${step.distance_m} m`}
+                              {step.distance_m >= 1000 ? `${(step.distance_m / 1000).toFixed(1)} km` : `${step.distance_m} m`}
                             </span>
                           )}
                         </div>
@@ -336,7 +331,51 @@ export default function Dashboard() {
           </div>
         )}
 
-        <ChatBot userLocation={userLocation} />
+        <ChatBot
+          userLocation={userLocation}
+          open={chatOpen}
+          onOpenChange={setChatOpen}
+        />
+
+        {/* Mobile bottom nav */}
+        <div className="md:hidden absolute bottom-0 left-0 right-0 z-30 bg-card/95 backdrop-blur-sm border-t border-border flex items-center gap-2 px-4 py-2.5">
+          <div className="flex-1 flex items-center gap-1.5 min-w-0">
+            <span className="text-sm font-bold text-foreground">{mapFacilities.length}</span>
+            <span className="text-xs text-muted-foreground truncate">facilities shown</span>
+            {nearbyFacilities.length > 0 && (
+              <span className="text-xs font-medium text-green-700 shrink-0">· {nearbyFacilities.length} nearby</span>
+            )}
+          </div>
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className={cn(
+              "flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium border transition-colors shrink-0",
+              activeFilterCount > 0
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-background text-foreground border-border hover:bg-accent"
+            )}
+          >
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            Filters
+            {activeFilterCount > 0 && (
+              <span className="bg-primary-foreground text-primary rounded-full px-1.5 py-0 text-[10px] font-bold leading-5">
+                {activeFilterCount}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setChatOpen((o) => !o)}
+            className={cn(
+              "flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors shrink-0",
+              chatOpen
+                ? "bg-muted text-foreground"
+                : "bg-primary text-primary-foreground"
+            )}
+          >
+            <MessageCircle className="h-3.5 w-3.5" />
+            Chat
+          </button>
+        </div>
       </main>
     </div>
   );

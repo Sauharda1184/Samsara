@@ -76,10 +76,18 @@ export default function Sidebar({
       {isOpen && <div className="fixed inset-0 bg-black/40 z-20 md:hidden" onClick={onClose} />}
 
       <aside className={cn(
-        "flex flex-col h-full bg-card border-r border-border w-72 shrink-0 z-30",
-        "fixed md:relative inset-y-0 left-0 transition-transform duration-300",
-        isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        "flex flex-col bg-card z-30 transition-transform duration-300",
+        // Mobile: bottom sheet
+        "fixed bottom-0 left-0 right-0 h-[82vh] rounded-t-2xl border-t border-border shadow-2xl",
+        // Desktop: left sidebar
+        "md:relative md:bottom-auto md:left-auto md:right-auto md:h-full md:w-72 md:shrink-0 md:rounded-none md:border-t-0 md:border-r md:shadow-none",
+        isOpen ? "translate-y-0" : "translate-y-full md:translate-y-0",
       )}>
+        {/* Mobile drag handle */}
+        <div className="md:hidden flex justify-center pt-2.5 pb-1 shrink-0">
+          <div className="w-8 h-1 rounded-full bg-muted-foreground/30" />
+        </div>
+
         {/* Header */}
         <div className="px-4 py-4 border-b border-border flex items-start justify-between">
           <div>
