@@ -2,6 +2,7 @@ import { useState, useMemo, useCallback, useRef } from "react";
 import { Menu, Search, X, CheckCircle, MapPin, Navigation, Route } from "lucide-react";
 import type { Facility, Province, Specialty, Service, FacilityCategory } from "../types";
 import { useAllFacilities, useNearbyFacilities, useUpdateFacility } from "../hooks/useFacilities";
+import ChatBot from "../components/ChatBot";
 import MapView, { type MapBounds } from "../components/MapView";
 import Sidebar from "../components/Sidebar";
 import { getRoute, type RouteResult } from "../api/client";
@@ -296,6 +297,8 @@ export default function Dashboard() {
             </div>
           </div>
         )}
+
+        <ChatBot userLocation={userLocation} />
       </main>
     </div>
   );
