@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useRef } from "react";
-import { Menu, Search, X, CheckCircle, MapPin, Navigation, Route } from "lucide-react";
+import { Menu, Search, X, CheckCircle, MapPin, Navigation, Route, ChevronDown, ChevronUp } from "lucide-react";
 import type { Facility, Province, Specialty, Service, FacilityCategory } from "../types";
 import { useAllFacilities, useNearbyFacilities, useUpdateFacility } from "../hooks/useFacilities";
 import ChatBot from "../components/ChatBot";
@@ -15,6 +15,7 @@ export default function Dashboard() {
   const [service, setService] = useState<Service>("All");
   const [facilityCategory, setFacilityCategory] = useState<FacilityCategory>("All");
   const [hasAvailableBeds, setHasAvailableBeds] = useState(false);
+  const [hasEmergency, setHasEmergency] = useState(false);
 
   // ── UI state ────────────────────────────────────────────────────────────────
   const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
@@ -24,6 +25,7 @@ export default function Dashboard() {
   const [mapSearch, setMapSearch] = useState("");
   const [routeData, setRouteData] = useState<RouteResult | null>(null);
   const [routeLoading, setRouteLoading] = useState(false);
+  const [showSteps, setShowSteps] = useState(false);
 
   // ── Area search state ────────────────────────────────────────────────────────
   const [activeBounds, setActiveBounds] = useState<MapBounds | null>(null);
@@ -45,13 +47,14 @@ export default function Dashboard() {
       if (specialty !== "All" && !f.specialties.includes(specialty)) return false;
       if (service !== "All" && !f.services.includes(service)) return false;
       if (hasAvailableBeds && f.available_beds <= 0) return false;
+      if (hasEmergency && !f.emergency_services) return false;
       if (activeBounds) {
         if (f.longitude < activeBounds.west || f.longitude > activeBounds.east) return false;
         if (f.latitude < activeBounds.south || f.latitude > activeBounds.north) return false;
       }
       return true;
     });
-  }, [allFacilities, facilityCategory, province, specialty, service, hasAvailableBeds, activeBounds]);
+  }, [allFacilities, facilityCategory, province, specialty, service, hasAvailableBeds, hasEmergency, activeBounds]);
 
   const nearbyIds = useMemo<Set<string>>(
     () => new Set(nearbyFacilities.map((f) => f.id)),
@@ -65,6 +68,7 @@ export default function Dashboard() {
       return f;
     });
     setRouteData(null);
+    setShowSteps(false);
     if (userLocation) {
       setRouteLoading(true);
       getRoute(userLocation.lon, userLocation.lat, f.longitude, f.latitude)
@@ -75,7 +79,7 @@ export default function Dashboard() {
 
   const handleLocationChange = useCallback((loc: { lat: number; lon: number } | null) => {
     setUserLocation(loc);
-    if (!loc) { setSelectedFacility(null); setRouteData(null); }
+    if (!loc) { setSelectedFacility(null); setRouteData(null); setShowSteps(false); }
   }, []);
 
   const handleMoveEnd = useCallback((bounds: MapBounds) => {
@@ -113,11 +117,13 @@ export default function Dashboard() {
         service={service}
         facilityCategory={facilityCategory}
         hasAvailableBeds={hasAvailableBeds}
+        hasEmergency={hasEmergency}
         onProvinceChange={(p) => { setProvince(p); setSelectedFacility(null); }}
         onSpecialtyChange={(s) => { setSpecialty(s); setSelectedFacility(null); }}
         onServiceChange={(s) => { setService(s); setSelectedFacility(null); }}
         onFacilityCategoryChange={(c) => { setFacilityCategory(c); setSelectedFacility(null); }}
         onHasAvailableBedsChange={setHasAvailableBeds}
+        onHasEmergencyChange={setHasEmergency}
         onLocationChange={handleLocationChange}
         onRadiusChange={setRadius}
         radius={radius}
@@ -211,7 +217,7 @@ export default function Dashboard() {
                   <p className="text-sm font-semibold text-foreground leading-snug">{selectedFacility.name}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{selectedFacility.province} · {selectedFacility.country}</p>
                 </div>
-                <button onClick={() => { setSelectedFacility(null); setRouteData(null); }} className="text-muted-foreground hover:text-foreground shrink-0">
+                <button onClick={() => { setSelectedFacility(null); setRouteData(null); setShowSteps(false); }} className="text-muted-foreground hover:text-foreground shrink-0">
                   <X className="h-4 w-4" />
                 </button>
               </div>
@@ -259,18 +265,50 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Route stats */}
+              {/* Route stats + turn-by-turn */}
               {userLocation && (routeLoading || routeData) && (
-                <div className="mx-4 mb-3 rounded-lg bg-blue-50 border border-blue-100 px-3 py-2 flex items-center gap-2">
-                  <Route className="h-4 w-4 text-blue-600 shrink-0" />
-                  {routeLoading ? (
-                    <span className="text-xs text-blue-700">Calculating route…</span>
-                  ) : routeData ? (
-                    <span className="text-xs text-blue-800">
-                      <span className="font-semibold">{routeData.distance_km.toFixed(1)} km</span> by road ·{" "}
-                      <span className="font-semibold">{Math.round(routeData.duration_min)} min</span> drive
-                    </span>
-                  ) : null}
+                <div className="mx-4 mb-3 rounded-lg bg-blue-50 border border-blue-100 overflow-hidden">
+                  <div className="px-3 py-2 flex items-center gap-2">
+                    <Route className="h-4 w-4 text-blue-600 shrink-0" />
+                    {routeLoading ? (
+                      <span className="text-xs text-blue-700">Calculating route…</span>
+                    ) : routeData ? (
+                      <>
+                        <span className="text-xs text-blue-800 flex-1">
+                          <span className="font-semibold">{routeData.distance_km.toFixed(1)} km</span> by road ·{" "}
+                          <span className="font-semibold">{Math.round(routeData.duration_min)} min</span> drive
+                        </span>
+                        {routeData.steps.length > 0 && (
+                          <button
+                            onClick={() => setShowSteps((s) => !s)}
+                            className="flex items-center gap-0.5 text-xs text-blue-600 hover:text-blue-800 font-medium shrink-0"
+                          >
+                            Directions
+                            {showSteps ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                          </button>
+                        )}
+                      </>
+                    ) : null}
+                  </div>
+
+                  {/* Turn-by-turn steps */}
+                  {showSteps && routeData && routeData.steps.length > 0 && (
+                    <div className="border-t border-blue-100 max-h-36 overflow-y-auto divide-y divide-blue-50">
+                      {routeData.steps.map((step, i) => (
+                        <div key={i} className="flex items-start gap-2 px-3 py-1.5">
+                          <span className="text-sm shrink-0 w-4 text-center leading-5">{step.icon}</span>
+                          <span className="text-xs text-blue-900 flex-1 leading-5">{step.instruction}</span>
+                          {step.distance_m > 0 && (
+                            <span className="text-xs text-blue-500 shrink-0 leading-5">
+                              {step.distance_m >= 1000
+                                ? `${(step.distance_m / 1000).toFixed(1)} km`
+                                : `${step.distance_m} m`}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 

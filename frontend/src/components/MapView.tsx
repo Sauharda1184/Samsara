@@ -20,6 +20,7 @@ interface MapViewProps {
 
 const OSM_STYLE: maplibregl.StyleSpecification = {
   version: 8,
+  glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
   sources: {
     osm: {
       type: "raster",
@@ -199,16 +200,49 @@ export default function MapView({
       map.addLayer({ id: "route-outline", type: "line", source: "route", paint: { "line-color": "#ffffff", "line-width": 7, "line-opacity": 0.9 } });
       map.addLayer({ id: "route-line", type: "line", source: "route", paint: { "line-color": "#2563eb", "line-width": 4, "line-opacity": 1 } });
 
-      // Facilities source — no clustering
+      // Facilities source with clustering
       map.addSource("facilities", {
         type: "geojson",
         data: { type: "FeatureCollection", features: [] },
+        cluster: true,
+        clusterMaxZoom: 11,
+        clusterRadius: 45,
+      });
+
+      // Cluster circles
+      map.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "facilities",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-color": ["step", ["get", "point_count"], "#60a5fa", 10, "#3b82f6", 30, "#1d4ed8"],
+          "circle-radius": ["step", ["get", "point_count"], 18, 10, 24, 30, 30],
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#ffffff",
+          "circle-opacity": 0.9,
+        },
+      });
+
+      // Cluster count labels
+      map.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "facilities",
+        filter: ["has", "point_count"],
+        layout: {
+          "text-field": ["get", "point_count_abbreviated"],
+          "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+          "text-size": 12,
+        },
+        paint: { "text-color": "#ffffff" },
       });
 
       map.addLayer({
         id: "facilities-circle",
         type: "circle",
         source: "facilities",
+        filter: ["!", ["has", "point_count"]],
         paint: {
           "circle-radius": [
             "case",
@@ -246,6 +280,19 @@ export default function MapView({
       map.addSource("radius-circle", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       map.addLayer({ id: "radius-fill", type: "fill", source: "radius-circle", paint: { "fill-color": "#2563eb", "fill-opacity": 0.06 } });
       map.addLayer({ id: "radius-border", type: "line", source: "radius-circle", paint: { "line-color": "#2563eb", "line-width": 2, "line-dasharray": [4, 3] } });
+
+      // Cluster click — zoom in
+      map.on("click", "clusters", async (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: ["clusters"] });
+        if (!features.length) return;
+        const clusterId = features[0].properties.cluster_id as number;
+        const coords = (features[0].geometry as GeoJSON.Point).coordinates as [number, number];
+        const src = map.getSource("facilities") as maplibregl.GeoJSONSource;
+        const zoom = await src.getClusterExpansionZoom(clusterId);
+        map.easeTo({ center: coords, zoom });
+      });
+      map.on("mouseenter", "clusters", () => { map.getCanvas().style.cursor = "pointer"; });
+      map.on("mouseleave", "clusters", () => { map.getCanvas().style.cursor = ""; });
 
       // Hover popup
       map.on("mouseenter", "facilities-circle", (e) => {

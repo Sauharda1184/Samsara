@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Loader2, LocateFixed, Search, X, SlidersHorizontal, BedDouble } from "lucide-react";
+import { Loader2, LocateFixed, Search, X, SlidersHorizontal, BedDouble, AlertCircle } from "lucide-react";
 import { PROVINCES, SPECIALTIES, SERVICES, FACILITY_CATEGORIES, type Province, type Specialty, type Service, type FacilityCategory } from "../types";
 import { geocodeLocation } from "../api/client";
 import { cn } from "../lib/utils";
@@ -13,11 +13,13 @@ interface SidebarProps {
   service: Service;
   facilityCategory: FacilityCategory;
   hasAvailableBeds: boolean;
+  hasEmergency: boolean;
   onProvinceChange: (p: Province) => void;
   onSpecialtyChange: (s: Specialty) => void;
   onServiceChange: (s: Service) => void;
   onFacilityCategoryChange: (c: FacilityCategory) => void;
   onHasAvailableBedsChange: (v: boolean) => void;
+  onHasEmergencyChange: (v: boolean) => void;
   onLocationChange: (loc: { lat: number; lon: number } | null) => void;
   onRadiusChange: (km: number) => void;
   radius: number;
@@ -28,8 +30,8 @@ interface SidebarProps {
 
 export default function Sidebar({
   totalCount, filteredCount, nearbyCount,
-  province, specialty, service, facilityCategory, hasAvailableBeds,
-  onProvinceChange, onSpecialtyChange, onServiceChange, onFacilityCategoryChange, onHasAvailableBedsChange,
+  province, specialty, service, facilityCategory, hasAvailableBeds, hasEmergency,
+  onProvinceChange, onSpecialtyChange, onServiceChange, onFacilityCategoryChange, onHasAvailableBedsChange, onHasEmergencyChange,
   onLocationChange, onRadiusChange,
   radius, hasLocation, isOpen, onClose,
 }: SidebarProps) {
@@ -66,7 +68,7 @@ export default function Sidebar({
 
   const activeFilterCount = [
     province !== "All", specialty !== "All", service !== "All",
-    facilityCategory !== "All", hasAvailableBeds,
+    facilityCategory !== "All", hasAvailableBeds, hasEmergency,
   ].filter(Boolean).length;
 
   return (
@@ -189,6 +191,23 @@ export default function Sidebar({
               </span>
             </button>
 
+            {/* Emergency services toggle */}
+            <button
+              onClick={() => onHasEmergencyChange(!hasEmergency)}
+              className={cn(
+                "w-full flex items-center gap-2 px-3 py-2 rounded-md border text-sm font-medium transition-colors",
+                hasEmergency
+                  ? "bg-red-50 border-red-300 text-red-800"
+                  : "bg-background border-input text-foreground hover:bg-accent"
+              )}
+            >
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              <span className="flex-1 text-left">Emergency services</span>
+              <span className={cn("h-4 w-8 rounded-full transition-colors relative shrink-0", hasEmergency ? "bg-red-500" : "bg-muted-foreground/30")}>
+                <span className={cn("absolute top-0.5 h-3 w-3 rounded-full bg-white shadow transition-transform", hasEmergency ? "translate-x-4" : "translate-x-0.5")} />
+              </span>
+            </button>
+
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Facility Type</label>
               <select value={facilityCategory} onChange={(e) => onFacilityCategoryChange(e.target.value as FacilityCategory)}
@@ -223,7 +242,7 @@ export default function Sidebar({
 
             {activeFilterCount > 0 && (
               <button
-                onClick={() => { onProvinceChange("All"); onSpecialtyChange("All"); onServiceChange("All"); onFacilityCategoryChange("All"); onHasAvailableBedsChange(false); }}
+                onClick={() => { onProvinceChange("All"); onSpecialtyChange("All"); onServiceChange("All"); onFacilityCategoryChange("All"); onHasAvailableBedsChange(false); onHasEmergencyChange(false); }}
                 className="w-full text-xs text-muted-foreground hover:text-foreground underline text-center"
               >
                 Clear all filters

@@ -48,27 +48,72 @@ export const api = {
   },
 };
 
+export interface RouteStep {
+  icon: string;
+  instruction: string;
+  distance_m: number;
+}
+
 export interface RouteResult {
   geometry: GeoJSON.LineString;
   distance_km: number;
   duration_min: number;
+  steps: RouteStep[];
+}
+
+function stepIcon(type: string, modifier?: string): string {
+  if (type === "arrive") return "📍";
+  if (type === "depart") return "🚦";
+  if (modifier === "left" || modifier === "sharp left") return "↰";
+  if (modifier === "right" || modifier === "sharp right") return "↱";
+  if (modifier === "slight left") return "↖";
+  if (modifier === "slight right") return "↗";
+  if (modifier === "uturn") return "↩";
+  if (type === "roundabout") return "↻";
+  return "↑";
+}
+
+function stepInstruction(maneuver: { type: string; modifier?: string }, name: string): string {
+  const road = name ? ` onto ${name}` : "";
+  switch (maneuver.type) {
+    case "depart": return `Start${road}`;
+    case "arrive": return "Arrive at destination";
+    case "turn":
+      if (maneuver.modifier === "left") return `Turn left${road}`;
+      if (maneuver.modifier === "right") return `Turn right${road}`;
+      if (maneuver.modifier === "slight left") return `Bear left${road}`;
+      if (maneuver.modifier === "slight right") return `Bear right${road}`;
+      if (maneuver.modifier === "sharp left") return `Sharp left${road}`;
+      if (maneuver.modifier === "sharp right") return `Sharp right${road}`;
+      return `Continue${road}`;
+    case "roundabout": return `Take the roundabout${road}`;
+    case "merge": return `Merge${road}`;
+    default: return `Continue${road}`;
+  }
 }
 
 export async function getRoute(
   fromLon: number, fromLat: number,
   toLon: number, toLat: number
 ): Promise<RouteResult | null> {
-  const url = `https://router.project-osrm.org/route/v1/driving/${fromLon},${fromLat};${toLon},${toLat}?overview=full&geometries=geojson`;
+  const url = `https://router.project-osrm.org/route/v1/driving/${fromLon},${fromLat};${toLon},${toLat}?overview=full&geometries=geojson&steps=true`;
   try {
     const res = await fetch(url);
     if (!res.ok) return null;
     const data = await res.json();
     if (data.code !== "Ok" || !data.routes?.length) return null;
     const route = data.routes[0];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const steps: RouteStep[] = (route.legs[0]?.steps ?? []).map((s: any) => ({
+      icon: stepIcon(s.maneuver.type, s.maneuver.modifier),
+      instruction: stepInstruction(s.maneuver, s.name ?? ""),
+      distance_m: Math.round(s.distance),
+    }));
     return {
       geometry: route.geometry as GeoJSON.LineString,
       distance_km: route.distance / 1000,
       duration_min: route.duration / 60,
+      steps,
     };
   } catch {
     return null;
